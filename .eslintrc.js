@@ -25,5 +25,7 @@ module.exports = {
     'no-console': 'off',
     'class-methods-use-this': 'off',
     'import/no-unresolved': 'off',
+    'import/first': 'off',
+    'no-param-reassign': 'off',
   },
 };
