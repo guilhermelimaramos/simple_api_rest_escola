@@ -6,7 +6,7 @@ const router = new Router();
 
 // Não é necessário
 // router.post('/', userController.store);
-// router.get('/', loginRequired, userController.index);
+router.get('/', loginRequired, userController.index);
 
 router.get('/:id', userController.show);
 router.put('/', loginRequired, userController.update);

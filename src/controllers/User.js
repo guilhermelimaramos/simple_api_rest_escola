@@ -65,7 +65,7 @@ class UserController {
         });
       }
 
-      const deleteData = await user.destroy(req.body);
+      await user.destroy(req.body);
       // const { id, name, email } = deleteData;
       return res.json({
         success: 'Usuário deletado com sucesso',
