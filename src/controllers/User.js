@@ -4,7 +4,8 @@ class UserController {
   async store(req, res) {
     try {
       const novoUser = await User.create(req.body);
-      return res.status(200).json(novoUser);
+      const { id, name, email } = novoUser;
+      return res.status(200).json({ id, name, email });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -15,7 +16,7 @@ class UserController {
   // Index
   async index(req, res) {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({ attributes: ['id', 'name', 'email'] });
       return res.json(users);
     } catch {
       return res.json(null);
@@ -25,9 +26,10 @@ class UserController {
   // Show
   async show(req, res) {
     try {
-      const { id } = req.params;
-      const user = await User.findByPk(id);
-      return res.json(user);
+      const user = await User.findByPk(req.params.id);
+      const { id, name, email } = user;
+
+      return res.json({ id, name, email });
     } catch {
       return res.status(400).json(null);
     }
@@ -36,16 +38,7 @@ class UserController {
   // Update
   async update(req, res) {
     try {
-      const { id } = req.params;
-
-      if (!id) {
-        return res.status(400).json({
-          errors: ['Id não enviado'],
-        });
-      }
-
-      const user = await User.findByPk(id);
-
+      const user = await User.findByPk(req.userId);
       if (!user) {
         return res.status(400).json({
           errors: ['Usuário não existe'],
@@ -53,8 +46,8 @@ class UserController {
       }
 
       const updateData = await user.update(req.body);
-
-      return res.json(updateData);
+      const { id, name, email } = updateData;
+      return res.json({ id, name, email });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -65,16 +58,7 @@ class UserController {
   // Delete
   async delete(req, res) {
     try {
-      const { id } = req.params;
-
-      if (!id) {
-        return res.status(400).json({
-          errors: ['Id não enviado'],
-        });
-      }
-
-      const user = await User.findByPk(id);
-
+      const user = await User.findByPk(req.userId);
       if (!user) {
         return res.status(400).json({
           errors: ['Usuário não existe'],
@@ -82,8 +66,10 @@ class UserController {
       }
 
       const deleteData = await user.destroy(req.body);
-
-      return res.json(deleteData);
+      // const { id, name, email } = deleteData;
+      return res.json({
+        success: 'Usuário deletado com sucesso',
+      });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
