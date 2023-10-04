@@ -27,5 +27,7 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/first': 'off',
     'no-param-reassign': 'off',
+    'quote-props': 'off',
+    'camelcase': 'off',
   },
 };
